@@ -1,3 +1,5 @@
+
+
 //====initializare i2c====
 
 #include <Wire.h> 
@@ -6,8 +8,8 @@
 
 #include <Servo.h>
 
-Servo motor_senzor;
-Servo motor_directie;
+Servo servo_senzor;
+
 
 //===initializare infrared=====
 
@@ -40,8 +42,8 @@ int in4 = 36; //Motor B2   R
 
 //===initializare senzor ultrasunete====
 
-int trig = 49;
-int echo = 48;
+int trig = 44;
+int echo = 45;
 
 //===============================
 
@@ -50,8 +52,8 @@ void setup() {
  pinMode(echo, INPUT);
 
 
- motor_directie.attach(6);
- motor_senzor.attach(7);
+
+ servo_senzor.attach(7);
 
  irrecv.enableIRIn();
  
@@ -63,6 +65,8 @@ void setup() {
  pinMode(33, INPUT);
  pinMode(35, INPUT);
 
+ pinMode(41, INPUT);
+ pinMode(43, INPUT);
  
  pinMode(in1, OUTPUT);
  pinMode(in4, OUTPUT);
@@ -79,6 +83,10 @@ void setup() {
 }
 
 void loop() {
+
+
+
+
 //===initializare senzori urmritor-linie====
 
 int s1 =    digitalRead(23);     //senzor 1
@@ -89,62 +97,98 @@ int s5 =    digitalRead(31);     //senzor 5
 int buton = digitalRead(33);     //CLP
 int near  = digitalRead(35);     //Near
 
+
+//===========================================
+//===initializare senzori laterali====
+//===========================================
+//int senzor_stanga   = digitalRead(41);     
+//int senzor_dreapta  = digitalRead(43);    
+//
+//if (senzor_stanga==LOW){
+//  motor_directie.write(120);
+//}else if(senzor_dreapta==LOW){
+//  motor_directie.write(60);
+//}else{
+//  motor_directie.write(90);
+//}
+//=========================================== 
+//============urmaritor-linie=============================
 //===========================================
 
 
-
-  
-
   if (distanta() > 5){
 
-      directie_motoare(1,90);
     
       if ((s1==HIGH)&&(s2==HIGH)&&(s3==LOW)&&(s4==HIGH)&&(s5==HIGH)){
-
-          motor_directie.write(87);
+        
+        do{
+          
+          directie_motoare(1,60);
+          
+        }while((s4==LOW) || (s2=LOW));
 
       } else if ((s1==HIGH)&&(s2==LOW)&&(s3==LOW)&&(s4==LOW)&&(s5==HIGH)){
 
-          motor_directie.write(87);
+         do{
+          
+          directie_motoare(1,70);
+          
+        }while((s1==LOW) || (s5=LOW));
 
       }else if ((s1==LOW)&&(s2==HIGH)&&(s3==HIGH)&&(s4==HIGH)&&(s5==HIGH)){
-            do{
-              motor_directie.write(63);
-
-            }while (s2 = LOW);
+        do{
+          
+          directie_motoare(5,150);
+          
+        }while(s2==LOW);
+          
               
       }else if ((s1==HIGH)&&(s2==LOW)&&(s3==HIGH)&&(s4==HIGH)&&(s5==HIGH)){
+          do{
+            
+           directie_motoare(4,150);   
+              
+          }while(s3==LOW);
+            
 
-            do{              
-              motor_directie.write(75);       
-            }while (s3 = LOW);
       }else if ((s1==HIGH)&&(s2==HIGH)&&(s3==HIGH)&&(s4==HIGH)&&(s5==LOW)){
           do{
-            motor_directie.write(112);
-
-          }while(s4= LOW);
-          
+            
+            directie_motoare(7,150);
+            
+          }while(s4==LOW);
+           
+    
       }else if ((s1==HIGH)&&(s2==HIGH)&&(s3==HIGH)&&(s4==LOW)&&(s5==HIGH)){
           do{
-            motor_directie.write(100);
-
+            
+            directie_motoare(6,90); 
+            
           }while(s3==LOW);
-          
+   
      }else if ((s1==LOW)&&(s2==LOW)&&(s3==HIGH)&&(s4==HIGH)&&(s5==HIGH)){
           do{
-            motor_directie.write(63);
-
+            
+            directie_motoare(4,90);
+            
           }while(s3==LOW);
+            
+
       }else if((s1==HIGH)&&(s2==HIGH)&&(s3==HIGH)&&(s4==LOW)&&(s5==LOW)){
           do{
-            motor_directie.write(112);
-
+          
+            directie_motoare(6,90);
+            
           }while(s3==LOW);
       }
-       else{
-        directie_motoare(3,1);
-       }
+        
+  }else{
+    directie_motoare(3,80);
   }
+
+
+
+  //===================control telecomanda - IR==================
 
 //  if (irrecv.decode(&results)) { // daca senzorul primeste
 //    unsigned long int codIR = results.value;
@@ -232,6 +276,42 @@ void directie_motoare(int d, int viteza){
         digitalWrite(in2,HIGH);
         digitalWrite(in3,HIGH);
         digitalWrite(in4,HIGH);
+    break;
+       case 4:
+//    stanga
+        analogWrite(enB,0);
+        analogWrite(enA,viteza);
+        digitalWrite(in1,HIGH);
+        digitalWrite(in2,LOW);
+        digitalWrite(in3,HIGH);
+        digitalWrite(in4,HIGH);
+    break;
+      case 5:
+    //    stanga brusc
+        analogWrite(enB,0);
+        analogWrite(enA,viteza+50);
+        digitalWrite(in1,HIGH);
+        digitalWrite(in2,LOW);
+        digitalWrite(in3,HIGH);
+        digitalWrite(in4,HIGH);
+    break;
+           case 6:
+//    dreapta
+        analogWrite(enB,viteza);
+        analogWrite(enA,0);
+        digitalWrite(in1,HIGH);
+        digitalWrite(in2,HIGH);
+        digitalWrite(in3,HIGH);
+        digitalWrite(in4,LOW);
+    break;
+      case 7:
+    //    dreapta brusc
+        analogWrite(enB,viteza+50);
+        analogWrite(enA,0);
+        digitalWrite(in1,HIGH);
+        digitalWrite(in2,HIGH);
+        digitalWrite(in3,HIGH);
+        digitalWrite(in4,LOW);
     break;
   }
 }
