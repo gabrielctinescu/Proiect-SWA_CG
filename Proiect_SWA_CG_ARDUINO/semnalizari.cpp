@@ -126,6 +126,7 @@ void semnalizari_setup(){
 
   m_stanga.init(); // module MAX7219
   m_stanga.setIntensity(15); // LED Intensity 0-15
+  Serial.begin(115200);
 }
 
 void semnalizare_stanga(){

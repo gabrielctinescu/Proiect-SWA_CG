@@ -6,6 +6,7 @@
   void ultrasunete_setup(){
     pinMode(trig, OUTPUT);
     pinMode(echo, INPUT);
+    Serial.begin(115200);
   }
   
   

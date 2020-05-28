@@ -68,12 +68,12 @@ void setup() {
       server.on("/right", handle_right);
       server.on("/cercle", handle_cercle);
       server.on("/stop", handle_stop);
-//      server.on("/ocolitor", handle_ocolitor);
-//      server.on("/urmaritor", handle_urmaritor);
+      server.on("/ocolitor", handle_ocolitor);
+      server.on("/urmaritor", handle_urmaritor);
       
-////   server.on("/ora", handle_ora);
-////   server.on("/secunde", handle_secunde);
-//   server.on("/infrared", handle_infrared);
+      server.on("/ora", handle_ora);
+      server.on("/minute", handle_minute);
+
 
    
       server.begin();
@@ -162,15 +162,15 @@ void loop() {
 //        if (buton2 == 0){
 //          minute1++;
 //        }
-//        if(minute1 == 10)
-//        {
-//          minute1 = 0;
-//          minute2++;
-//        }
-//        if (minute2 == 6)
-//        {
-//          minute2 = 0;
-//        }
+        if(minute1 == 10)
+        {
+          minute1 = 0;
+          minute2++;
+        }
+        if (minute2 == 6)
+        {
+          minute2 = 0;
+        }
 //    }
 //}
 //if (buton1==0 && buton2==1 && buton3==1){
@@ -180,15 +180,15 @@ void loop() {
 //        if (buton1 == 0){
 //          ora1++;
 //        }
-//        if (ora1 == 10)
-//        {
-//          ora1 = 0;
-//          ora2++;
-//        }
-//        if (ora1 == 5 && ora2 == 2){
-//            ora1 = 0;
-//            ora2 = 0;
-//        }
+        if (ora1 == 10)
+        {
+          ora1 = 0;
+          ora2++;
+        }
+        if (ora1 == 4 && ora2 == 2){
+            ora1 = 0;
+            ora2 = 0;
+        }
 //
 //
 //    }
@@ -248,15 +248,22 @@ void handle_cercle() {
   server.send(200, "text/html", PAGINA_INDEX);
       trimite(6);
 }
-//void handle_ocolitor() {
-//  server.send(200, "text/html", PAGINA_INDEX);
-//      trimite(7);
-//}
-//void handle_urmaritor() {
-//  server.send(200, "text/html", PAGINA_INDEX);
-//      trimite(8);
-//}
-
+void handle_ocolitor() {
+  server.send(200, "text/html", PAGINA_INDEX);
+      trimite(7);
+}
+void handle_urmaritor() {
+  server.send(200, "text/html", PAGINA_INDEX);
+      trimite(8);
+}
+void handle_minute() {
+  server.send(200, "text/html", PAGINA_INDEX);
+      minute1++;
+}
+void handle_ora() {
+  server.send(200, "text/html", PAGINA_INDEX);
+      ora1++;
+}
 void handle_index(){
   String pagina = PAGINA_INDEX;
   server.send(200,"text/html",pagina);
