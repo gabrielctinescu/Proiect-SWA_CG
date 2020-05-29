@@ -26,6 +26,11 @@ const int16_t I2C_SLAVE = 0x08;
 
 #include <IRremote.h>
 
+
+//initializare neopixel led=====
+
+#include "fastledpixel.h"
+
 int pinIR = 28;
 
 IRrecv irrecv(pinIR);
@@ -58,6 +63,8 @@ void setup() {
   ocolitor_setup();
   
   semnalizari_setup();
+
+  setup_fastled();
   
  Serial.begin(115200);
 }
@@ -83,11 +90,13 @@ void loop() {
     
     directie_motoare(6);
     semnalizare_dreapta();
+    fastled_dreapta();
   }
   if (wemos_data == 4){
     
     directie_motoare(4);
     semnalizare_stanga();
+    fastled_stanga();
   }
   if (wemos_data == 3){
     
@@ -96,6 +105,7 @@ void loop() {
   if (wemos_data == 2){
     
     directie_motoare(1);
+    fastled_fata();
   }
   if (wemos_data == 1){
     
@@ -114,11 +124,13 @@ void loop() {
         
         directie_motoare(4);
         semnalizare_stanga();
+        fastled_stanga();
       }
     else if (codIR == ir_dreapta)
       {
         directie_motoare(6);
         semnalizare_dreapta();
+        fastled_dreapta();
       }
     else if (codIR == ir_spate)
       {
@@ -131,6 +143,7 @@ void loop() {
     else if(codIR == ir_fata)
     {
       directie_motoare(1);
+      fastled_fata();
     }
     irrecv.resume();
   }
