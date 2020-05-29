@@ -66,12 +66,12 @@ void loop() {
 
 //  control wemos
 
-  if (wemos_data == 8){
+  if (wemos_data == 7){
     
     ocolitor_obstacole();
   }
     
-  if (wemos_data == 7){
+  if (wemos_data == 8){
     
     urmaritor_linie();
   }

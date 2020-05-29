@@ -44,6 +44,10 @@ void setup() {
   
   Serial.begin(115200);
   
+  lcd.init();
+  lcd.backlight();
+  
+  dht.begin();
   WiFi.begin(ssid,password); 
   Wire.begin(I2C_MASTER); 
   
@@ -79,14 +83,15 @@ void setup() {
       server.begin();
 
       Serial.println("Serverul a pornit");
+      lcd.setCursor(1,1);
+      lcd.print("ON");
     }else{
       Serial.println("Eroare ");
+      lcd.setCursor(1,1);
+      lcd.print("OFF");
     }
     
-  lcd.init();
-  lcd.backlight();
-  
-  dht.begin();
+
   
 }
 

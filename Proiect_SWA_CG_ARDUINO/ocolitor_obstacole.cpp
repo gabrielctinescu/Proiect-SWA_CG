@@ -91,12 +91,40 @@ void ocolitor_obstacole()
               }
         }
     }else if ((distanta_fata < 12)|| (senzor_mijloc == HIGH)){
-        directie_motoare(2);
-        delay(1000);
-        directie_motoare(7);
-        delay(500);
-        directie_motoare(1);
+          
+          directie_motoare(2);  // spate
+          delay(300);
+          directie_motoare(3);  // stop
+
+          motor_servo.write(unghi_stanga);
+          delay(500);
+          distanta_stanga = distanta();
+    
+          motor_servo.write(unghi_dreapta);
+          delay(500);
+          distanta_dreapta = distanta();
+
+          motor_servo.write(unghi_drept);
+
+
+          if((distanta_dreapta > distanta_stanga) && (distanta_dreapta > 20))
+            {
+              directie_motoare(7);
+              delay(500);
+              directie_motoare(1);
+      
+            }else if((distanta_stanga > distanta_dreapta)&& (distanta_stanga > 20))
+              {
+                directie_motoare(5);
+                delay(500);
+                directie_motoare(1);
+              }else{
+                directie_motoare(2);
+                delay(1000);
+                directie_motoare(7);
+                delay(500);
+                directie_motoare(1);
+              }
     }
-  
-  
+ 
 }
